@@ -84,6 +84,9 @@ Uses a combination of backdrop filters (`blur(24px)`), semi-transparent gradient
 **Architect & Lead Developer**: Rohan Mehindrakar  
 **Platform**: Google AI Studio
 
+*   **LinkedIn**: [linkedin.com/in/rohan-mehindrakar/](https://www.linkedin.com/in/rohan-mehindrakar/)
+*   **Email**: [rohan.mehindrakar@gmail.com](mailto:rohan.mehindrakar@gmail.com)
+
 This project demonstrates the potential of combining high-end frontend engineering with powerful Large Language Models (LLMs) to create tools that enhance human self-awareness and communication skills.
 
 ---

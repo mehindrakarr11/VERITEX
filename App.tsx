@@ -16,7 +16,7 @@ import { Loader } from './components/ui/Loader';
 import { CameraView } from './components/CameraView';
 import { Visualizer } from './components/Visualizer';
 import { ResultsView } from './components/ResultsView';
-import { Mic, Video, BrainCircuit, ShieldCheck, Play, Square, Loader2, Volume2 } from 'lucide-react';
+import { Mic, Video, BrainCircuit, ShieldCheck, Play, Square, Loader2, Volume2, Linkedin, Mail } from 'lucide-react';
 
 const App: React.FC = () => {
   // --- State ---
@@ -354,7 +354,7 @@ const App: React.FC = () => {
      </div>
   );
 
-  const showFooter = [AppMode.LANDING, AppMode.PERMISSIONS, AppMode.CALIBRATION, AppMode.RESULTS].includes(mode);
+  const showFooter = mode !== AppMode.BOOT;
 
   return (
     <div className="min-h-screen text-slate-200">
@@ -392,10 +392,35 @@ const App: React.FC = () => {
             transition={{ delay: 0.5 }}
             className="fixed bottom-6 left-0 right-0 flex justify-center z-40 pointer-events-none"
           >
-            <div className="px-5 py-2 rounded-full bg-slate-900/40 backdrop-blur-md border border-white/5 text-[10px] text-slate-500 font-mono tracking-wider uppercase shadow-2xl flex items-center gap-3">
-              <span>Architected by <span className="text-slate-300 font-semibold">Rohan Mehindrakar</span></span>
-              <span className="w-px h-3 bg-white/10" />
-              <span>Designed with <span className="text-cyan-500/90 font-semibold">Google AI Studio</span></span>
+            <div className="pointer-events-auto px-6 py-3 rounded-full bg-slate-900/80 backdrop-blur-xl border border-white/10 text-[10px] md:text-xs text-slate-500 font-mono tracking-wider uppercase shadow-2xl flex flex-col md:flex-row items-center gap-3 md:gap-6 hover:border-cyan-500/30 transition-colors duration-500">
+              <div className="flex items-center gap-2">
+                <span>Architected by</span>
+                <span className="text-slate-200 font-semibold">Rohan Mehindrakar</span>
+              </div>
+              
+              <div className="flex items-center gap-3 pl-0 md:pl-4 md:border-l border-white/10">
+                <a 
+                  href="https://www.linkedin.com/in/rohan-mehindrakar/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 hover:text-cyan-400 transition-colors group"
+                >
+                  <Linkedin className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+                  <span className="hidden sm:inline">LinkedIn</span>
+                </a>
+                <a 
+                  href="mailto:rohan.mehindrakar@gmail.com"
+                  className="flex items-center gap-2 hover:text-cyan-400 transition-colors group"
+                >
+                  <Mail className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+                  <span className="hidden sm:inline">Contact</span>
+                </a>
+              </div>
+
+              <div className="hidden md:flex items-center gap-2 ml-auto">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
+                <span>Powered by <span className="text-cyan-500 font-semibold">Google Gemini</span></span>
+              </div>
             </div>
           </motion.footer>
         )}
