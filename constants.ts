@@ -2,10 +2,28 @@ import { Question, AnalysisType } from './types';
 
 export const QUESTIONS: Question[] = [
   {
-    id: 'q_baseline',
+    id: 'q_baseline_1',
     type: AnalysisType.BASELINE,
-    text: "Please state your name, your current location, and describe the weather outside today.",
-    description: "Establishing baseline vocal patterns and facial calmness."
+    text: "Please introduce yourself briefly.",
+    description: "Establishing baseline vocal tone and speaking pace."
+  },
+  {
+    id: 'q_baseline_2',
+    type: AnalysisType.BASELINE,
+    text: "Where are you currently based?",
+    description: "Observing neutral, factual response behavior."
+  },
+  {
+    id: 'q_baseline_3',
+    type: AnalysisType.BASELINE,
+    text: "What subject or domain are you most comfortable with?",
+    description: "Identifying confident body language in comfort zones."
+  },
+  {
+    id: 'q_baseline_4',
+    type: AnalysisType.BASELINE,
+    text: "How is your day going so far?",
+    description: "Checking natural conversational rhythm and emotional baseline."
   },
   {
     id: 'q_logic_1',
