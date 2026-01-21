@@ -1,8 +1,10 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { AnalysisMetric } from "../types";
 
-// Initialize client using process.env.API_KEY as per guidelines
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// FIX: Use Vite-specific environment variable access
+// Vercel/Vite will inject VITE_GEMINI_API_KEY, not process.env.API_KEY
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
+const ai = new GoogleGenAI({ apiKey: apiKey });
 
 export const analyzeResponse = async (
   question: string,
@@ -10,6 +12,11 @@ export const analyzeResponse = async (
   type: string
 ): Promise<AnalysisMetric> => {
   try {
+    if (!apiKey) {
+      console.warn("Missing VITE_GEMINI_API_KEY. Using mock data fallback.");
+      return mockAnalysis();
+    }
+
     const systemInstruction = `
 You are VERITEX, an expert behavioral analyst for professional interviews.
 Your goal is to evaluate the candidate's communication delivery, psychological comfort, and clarity.
@@ -82,7 +89,7 @@ const mockAnalysis = (): AnalysisMetric => ({
   stress: Math.floor(Math.random() * 40),
   hesitation: Math.floor(Math.random() * 30),
   clarity: Math.floor(Math.random() * 20) + 70,
-  summary: "Simulation mode: Response shows moderate structure but lacks specific details. (API Error)",
+  summary: "Simulation mode: Response shows moderate structure but lacks specific details. (Check API Key)",
   strengths: ["Clear voice", "Good pace"],
   improvements: ["Reduce filler words", "Provide concrete examples"]
 });
