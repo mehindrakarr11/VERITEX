@@ -29,15 +29,17 @@ const App: React.FC = () => {
   
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
-  const [transcript, setTranscript] = useState('');
+  const [transcriptDisplay, setTranscriptDisplay] = useState('');
   const [sessionData, setSessionData] = useState<SessionData>({
     responses: [],
     baseline: { wpm: 0, avgPause: 0 }
   });
   
   // Refs for Speech Recognition
-  const recognitionRef = useRef<any>(null); // Using 'any' for window.SpeechRecognition types
+  const recognitionRef = useRef<any>(null); 
   const startTimeRef = useRef<number>(0);
+  const finalTranscriptRef = useRef('');
+  const interimTranscriptRef = useRef('');
 
   // --- Helpers ---
 
@@ -79,15 +81,24 @@ const App: React.FC = () => {
       recognition.lang = 'en-US';
 
       recognition.onresult = (event: any) => {
-        let finalTranscript = '';
+        let interimChunk = '';
+        let finalChunk = '';
+
         for (let i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
-            finalTranscript += event.results[i][0].transcript;
+            finalChunk += event.results[i][0].transcript;
+          } else {
+            interimChunk += event.results[i][0].transcript;
           }
         }
-        if (finalTranscript) {
-          setTranscript(prev => prev + " " + finalTranscript);
+
+        if (finalChunk) {
+          finalTranscriptRef.current += ' ' + finalChunk;
         }
+        interimTranscriptRef.current = interimChunk;
+
+        // Update UI
+        setTranscriptDisplay((finalTranscriptRef.current + ' ' + interimTranscriptRef.current).trim());
       };
 
       recognition.onerror = (event: any) => {
@@ -114,7 +125,9 @@ const App: React.FC = () => {
 
   const handleStartRecording = () => {
     setIsRecording(true);
-    setTranscript('');
+    setTranscriptDisplay('');
+    finalTranscriptRef.current = '';
+    interimTranscriptRef.current = '';
     startTimeRef.current = Date.now();
     if (recognitionRef.current) {
       try {
@@ -129,13 +142,16 @@ const App: React.FC = () => {
     setIsRecording(false);
     if (recognitionRef.current) recognitionRef.current.stop();
 
+    // Capture the most up-to-date transcript from refs
+    const fullTranscript = (finalTranscriptRef.current + ' ' + interimTranscriptRef.current).trim();
     const duration = (Date.now() - startTimeRef.current) / 1000;
     const currentQ = QUESTIONS[currentQuestionIndex];
     
     // Show Loading/Processing State
     setMode(AppMode.ANALYZING);
 
-    const metrics = await analyzeResponse(currentQ.text, transcript || "[No Audio Detected]", currentQ.type);
+    const safeTranscript = fullTranscript || "[No Audio Detected]";
+    const metrics = await analyzeResponse(currentQ.text, safeTranscript, currentQ.type);
     
     setSessionData(prev => ({
       ...prev,
@@ -143,7 +159,7 @@ const App: React.FC = () => {
         ...prev.responses,
         {
           questionId: currentQ.id,
-          transcript: transcript || "[No Audio Detected]",
+          transcript: safeTranscript,
           duration,
           metrics
         }
@@ -302,7 +318,7 @@ const App: React.FC = () => {
                    {isRecording && (
                       <GlassPanel className="p-4 border-l-2 border-l-cyan-500">
                         <p className="text-sm text-slate-300 font-mono opacity-80 h-24 overflow-y-auto">
-                          {transcript || "Listening..."}
+                          {transcriptDisplay || "Listening..."}
                         </p>
                       </GlassPanel>
                    )}

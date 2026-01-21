@@ -123,10 +123,32 @@ export const ResultsView: React.FC<ResultsViewProps> = ({ data, onRestart }) => 
                 <span className="px-2 py-0.5 bg-slate-800 rounded text-xs text-slate-400 font-mono">Q{idx + 1}</span>
                 <p className="text-slate-300 font-medium line-clamp-1">{resp.transcript || "No audible response recorded."}</p>
               </div>
-              <p className="text-sm text-slate-400 italic">"{resp.metrics.reasoning}"</p>
+              <p className="text-sm text-slate-400 italic">"{resp.metrics.summary}"</p>
+              
+              {/* Strengths & Improvements Badges */}
+              <div className="flex flex-wrap gap-x-6 gap-y-2 mt-2">
+                {resp.metrics.strengths.length > 0 && (
+                  <div className="text-[10px] text-green-400/80">
+                    <span className="uppercase font-bold text-green-500/50 mr-1">Strengths:</span> 
+                    {resp.metrics.strengths.slice(0, 3).join(" • ")}
+                  </div>
+                )}
+                {resp.metrics.improvements.length > 0 && (
+                  <div className="text-[10px] text-amber-400/80">
+                    <span className="uppercase font-bold text-amber-500/50 mr-1">Tips:</span> 
+                    {resp.metrics.improvements.slice(0, 2).join(" • ")}
+                  </div>
+                )}
+              </div>
             </div>
             
             <div className="flex gap-4 shrink-0">
+               <div className="text-center">
+                 <div className="text-xs text-slate-500 uppercase">Clarity</div>
+                 <div className="text-lg font-bold font-display text-cyan-200">
+                   {resp.metrics.clarity}/100
+                 </div>
+               </div>
                <div className="text-center">
                  <div className="text-xs text-slate-500 uppercase">Stress</div>
                  <div className={`text-lg font-bold font-display ${resp.metrics.stress > 60 ? 'text-red-400' : 'text-slate-200'}`}>

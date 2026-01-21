@@ -25,7 +25,10 @@ export interface AnalysisMetric {
   confidence: number; // 0-100
   stress: number; // 0-100
   hesitation: number; // 0-100
-  reasoning: string;
+  clarity: number; // 0-100
+  summary: string;
+  strengths: string[];
+  improvements: string[];
 }
 
 export interface SessionData {
