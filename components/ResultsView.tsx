@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 import { SessionData, AnalysisMetric } from '../types';
 import { GlassPanel, Button } from './ui/Glass';
-import { Download, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Download, AlertCircle } from 'lucide-react';
 
 interface ResultsViewProps {
   data: SessionData;

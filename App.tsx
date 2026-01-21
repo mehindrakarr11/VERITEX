@@ -3,9 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { 
   AppMode, 
   SessionData, 
-  WebRTCState, 
-  Question,
-  AnalysisMetric
+  WebRTCState
 } from './types';
 import { QUESTIONS, DISCLAIMER_TEXT } from './constants';
 import { analyzeResponse } from './services/geminiService';
