@@ -1,10 +1,20 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { AnalysisMetric } from "../types";
 
-// FIX: Use Vite-specific environment variable access
-// Vercel/Vite will inject VITE_GEMINI_API_KEY, not process.env.API_KEY
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
-const ai = new GoogleGenAI({ apiKey: apiKey });
+// FIX: Safely access environment variables with optional chaining
+// This prevents runtime crashes if import.meta.env is temporarily undefined
+const apiKey = import.meta.env?.VITE_GEMINI_API_KEY;
+
+let ai: GoogleGenAI | null = null;
+
+// Initialize conditionally to prevent top-level crash if key is missing/empty
+if (apiKey) {
+  try {
+    ai = new GoogleGenAI({ apiKey });
+  } catch (err) {
+    console.error("Error initializing GoogleGenAI client:", err);
+  }
+}
 
 export const analyzeResponse = async (
   question: string,
@@ -12,8 +22,8 @@ export const analyzeResponse = async (
   type: string
 ): Promise<AnalysisMetric> => {
   try {
-    if (!apiKey) {
-      console.warn("Missing VITE_GEMINI_API_KEY. Using mock data fallback.");
+    if (!ai) {
+      console.warn("Missing VITE_GEMINI_API_KEY or failed initialization. Using mock data fallback.");
       return mockAnalysis();
     }
 
