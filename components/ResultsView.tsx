@@ -13,7 +13,6 @@ interface ResultsViewProps {
 export const ResultsView: React.FC<ResultsViewProps> = ({ data, onRestart }) => {
   // Aggregate Metrics
   const avgConfidence = Math.round(data.responses.reduce((acc, r) => acc + r.metrics.confidence, 0) / data.responses.length) || 0;
-  const avgStress = Math.round(data.responses.reduce((acc, r) => acc + r.metrics.stress, 0) / data.responses.length) || 0;
   
   // Data for Confidence Gauge
   const confidenceData = [
