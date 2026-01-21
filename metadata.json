@@ -1,0 +1,8 @@
+{
+  "name": "VERITEX - Behavioral Analysis",
+  "description": "A privacy-first, responsible AI behavioral analysis tool using behavioral indicators and confidence scoring.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
